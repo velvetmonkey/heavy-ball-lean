@@ -1,5 +1,6 @@
 # heavy-ball-lean
 
+[![thread](https://img.shields.io/badge/%F0%9F%A7%B5-how%20it%20works-1DA1F2)](https://x.com/thevelvetmonke)
 [![Lean 4](https://img.shields.io/badge/Lean-4.28.0-blue)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-v4.28.0-purple)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -12,7 +13,15 @@ Lean 4 formal proofs for the heavy ball method, also known as Polyak momentum, f
 
 **Zero sorry statements.** Standard axioms only (`propext`, `Classical.choice`, `Quot.sound`).
 
-## Why it matters
+## What this is, and why it matters
+
+This library formalizes a Lyapunov convergence wrapper for Polyak's heavy ball method. Its headline theorem, `heavy_ball_convergence`, proves that the function-value gap of a certified orbit is bounded by its initial energy times `rho^k`, where `rho` is the classical condition-number expression and is proved to lie below one.
+
+The checked proof turns one-step contraction into a global rate. It proves the parameter facts, iterates the energy inequality, and uses the nonnegative quadratic part of the Lyapunov energy to bound the objective gap. This isolates a reusable, machine-checked convergence implication.
+
+The essential analytical step is assumed. `HeavyBallOrbit` includes both the momentum update and a field asserting `E_(k+1) <= rho*E_k`; the library does not derive that descent certificate from smoothness and strong convexity. The headline therefore applies to certified orbits, not automatically to every orbit generated from the listed parameter formulas.
+
+## Background and motivation
 
 The heavy ball method is a classical accelerated first-order method for smooth strongly convex optimisation. It updates the current point using both the gradient and a momentum term:
 
